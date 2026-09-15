@@ -1,0 +1,203 @@
+<title>Entropy vs Acceptance Length</title>
+<style>
+.viz-root {
+  color-scheme: light;
+  --surface-1:      #fcfcfb;
+  --surface-2:      #f3f2ef;
+  --text-primary:   #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted:     #82817b;
+  --grid:           #e4e2dc;
+  --series-1:       #2a78d6;
+  --series-1-soft:  #cfe0f7;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) .viz-root {
+    color-scheme: dark;
+    --surface-1:      #1a1a19;
+    --surface-2:      #232322;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #8f8e86;
+    --grid:           #33322f;
+    --series-1:       #3987e5;
+    --series-1-soft:  #1f3a5c;
+  }
+}
+:root[data-theme="dark"] .viz-root {
+  color-scheme: dark;
+  --surface-1:      #1a1a19;
+  --surface-2:      #232322;
+  --text-primary:   #ffffff;
+  --text-secondary: #c3c2b7;
+  --text-muted:     #8f8e86;
+  --grid:           #33322f;
+  --series-1:       #3987e5;
+  --series-1-soft:  #1f3a5c;
+}
+* { box-sizing: border-box; }
+body { background: var(--surface-1); }
+.viz-root {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--surface-1);
+  color: var(--text-primary);
+  padding: 24px 16px 32px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+h1 { font-size: 17px; font-weight: 600; margin: 0 0 4px; }
+.subtitle { font-size: 13px; color: var(--text-secondary); margin: 0 0 18px; }
+.stats-row {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;
+}
+.stat {
+  background: var(--surface-2); border-radius: 8px; padding: 8px 14px;
+  font-size: 12px; color: var(--text-secondary);
+}
+.stat b { color: var(--text-primary); font-size: 14px; font-weight: 600; display: block; }
+.chart-wrap { position: relative; width: 100%; overflow-x: auto; }
+svg { display: block; }
+.bar { fill: var(--series-1); }
+.bar:hover { opacity: 0.8; cursor: pointer; }
+.whisker { stroke: var(--text-muted); stroke-width: 1.5; }
+.axis-line { stroke: var(--grid); stroke-width: 1; }
+.axis-label { fill: var(--text-secondary); font-size: 11px; }
+.axis-title { fill: var(--text-secondary); font-size: 12px; }
+.tick-label { fill: var(--text-muted); font-size: 10px; }
+#tooltip {
+  position: absolute; pointer-events: none; background: var(--surface-2);
+  border: 1px solid var(--grid); border-radius: 8px; padding: 8px 10px;
+  font-size: 12px; color: var(--text-primary); box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  display: none; white-space: nowrap; z-index: 10;
+}
+#tooltip .tt-title { font-weight: 600; margin-bottom: 2px; }
+#tooltip .tt-row { color: var(--text-secondary); }
+.note { font-size: 12px; color: var(--text-muted); margin-top: 14px; line-height: 1.5; }
+table.data-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; }
+table.data-table th, table.data-table td { text-align: right; padding: 4px 8px; border-bottom: 1px solid var(--grid); color: var(--text-secondary); }
+table.data-table th:first-child, table.data-table td:first-child { text-align: left; }
+details summary { font-size: 12px; color: var(--text-secondary); cursor: pointer; margin-top: 12px; }
+</style>
+
+<div class="viz-root">
+  <h1>Entropy vs. DFlash2 acceptance length</h1>
+  <p class="subtitle">Muse-Glimmer-30B on SWE-bench Verified agent trajectories &mdash; mean accepted draft-block length by target-distribution entropy (final: 50-task SWE-bench Verified run)</p>
+
+  <div class="stats-row" id="stats-row"></div>
+
+  <div class="chart-wrap">
+    <svg id="chart" width="860" height="420"></svg>
+    <div id="tooltip"></div>
+  </div>
+
+  <p class="note">Each point aggregates the block-anchor (position 0) Shannon entropy of the target model's full-vocab next-token distribution against how many of that block's up-to-16 drafted tokens DFlash2 accepted, logged directly from vLLM's rejection sampler for every verification step. Low-entropy spans (confident/boilerplate code) get whole blocks accepted; high-entropy spans (uncertain reasoning) get rejected almost immediately &mdash; exactly the relationship DFlash's design predicts.</p>
+
+  <details>
+    <summary>Show binned data table</summary>
+    <table class="data-table" id="data-table"></table>
+  </details>
+</div>
+
+<script>
+const DATA = {"n_blocks": 221341, "n_requests": 4721, "pearson": -0.3831, "spearman": -0.5172, "buckets": [{"entropy": 0.053, "mean_accepted_len": 5.996, "count": 122021, "std": 4.79}, {"entropy": 0.162, "mean_accepted_len": 3.694, "count": 10085, "std": 2.74}, {"entropy": 0.271, "mean_accepted_len": 3.345, "count": 7834, "std": 2.533}, {"entropy": 0.379, "mean_accepted_len": 3.133, "count": 7155, "std": 2.497}, {"entropy": 0.487, "mean_accepted_len": 2.939, "count": 7210, "std": 2.454}, {"entropy": 0.595, "mean_accepted_len": 2.725, "count": 8181, "std": 2.332}, {"entropy": 0.703, "mean_accepted_len": 2.516, "count": 9864, "std": 2.225}, {"entropy": 0.811, "mean_accepted_len": 2.332, "count": 7099, "std": 2.011}, {"entropy": 0.92, "mean_accepted_len": 2.191, "count": 6506, "std": 1.848}, {"entropy": 1.028, "mean_accepted_len": 2.068, "count": 6164, "std": 1.755}, {"entropy": 1.136, "mean_accepted_len": 1.951, "count": 5640, "std": 1.642}, {"entropy": 1.244, "mean_accepted_len": 1.89, "count": 4757, "std": 1.566}, {"entropy": 1.352, "mean_accepted_len": 1.796, "count": 4146, "std": 1.559}, {"entropy": 1.46, "mean_accepted_len": 1.712, "count": 3568, "std": 1.422}, {"entropy": 1.569, "mean_accepted_len": 1.653, "count": 2893, "std": 1.388}, {"entropy": 1.677, "mean_accepted_len": 1.578, "count": 2367, "std": 1.331}, {"entropy": 1.785, "mean_accepted_len": 1.528, "count": 1787, "std": 1.176}, {"entropy": 1.893, "mean_accepted_len": 1.495, "count": 1301, "std": 1.163}, {"entropy": 2.002, "mean_accepted_len": 1.385, "count": 984, "std": 1.159}, {"entropy": 2.11, "mean_accepted_len": 1.393, "count": 672, "std": 0.92}]};
+
+const root = document.currentScript.previousElementSibling.parentElement.querySelector ? document : document;
+const statsRow = document.getElementById('stats-row');
+statsRow.innerHTML = `
+  <div class="stat"><b>${DATA.n_blocks.toLocaleString()}</b>blocks</div>
+  <div class="stat"><b>${DATA.n_requests.toLocaleString()}</b>requests</div>
+  <div class="stat"><b>${DATA.pearson}</b>Pearson r</div>
+  <div class="stat"><b>${DATA.spearman}</b>Spearman &rho;</div>
+`;
+
+const svg = document.getElementById('chart');
+const tooltip = document.getElementById('tooltip');
+const W = 860, H = 420;
+const margin = { top: 16, right: 20, bottom: 46, left: 48 };
+const plotW = W - margin.left - margin.right;
+const plotH = H - margin.top - margin.bottom;
+
+const buckets = DATA.buckets;
+const maxEntropy = Math.max(...buckets.map(b => b.entropy));
+const maxY = Math.max(...buckets.map(b => b.mean_accepted_len + b.std / Math.sqrt(b.count)));
+const barW = plotW / buckets.length;
+
+const xScale = i => margin.left + i * barW + barW * 0.1;
+const yScale = v => margin.top + plotH - (v / maxY) * plotH;
+const barWidth = barW * 0.8;
+
+const ns = 'http://www.w3.org/2000/svg';
+function el(tag, attrs) {
+  const e = document.createElementNS(ns, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+
+// gridlines + y-axis ticks
+const yTicks = 5;
+for (let t = 0; t <= yTicks; t++) {
+  const v = (maxY / yTicks) * t;
+  const y = yScale(v);
+  svg.appendChild(el('line', { x1: margin.left, x2: W - margin.right, y1: y, y2: y, class: 'axis-line' }));
+  const label = el('text', { x: margin.left - 8, y: y + 3, 'text-anchor': 'end', class: 'tick-label' });
+  label.textContent = v.toFixed(1);
+  svg.appendChild(label);
+}
+
+// bars + whiskers
+buckets.forEach((b, i) => {
+  const x = xScale(i);
+  const yTop = yScale(b.mean_accepted_len);
+  const yBase = yScale(0);
+  const bar = el('rect', {
+    x, y: yTop, width: barWidth, height: Math.max(0, yBase - yTop),
+    rx: 4, ry: 4, class: 'bar'
+  });
+  bar.addEventListener('mouseenter', (ev) => {
+    tooltip.style.display = 'block';
+    tooltip.innerHTML = `<div class="tt-title">entropy &asymp; ${b.entropy}</div>
+      <div class="tt-row">mean accepted length: ${b.mean_accepted_len}</div>
+      <div class="tt-row">n blocks: ${b.count.toLocaleString()}</div>
+      <div class="tt-row">std dev: ${b.std}</div>`;
+  });
+  bar.addEventListener('mousemove', (ev) => {
+    const rect = svg.getBoundingClientRect();
+    tooltip.style.left = (ev.clientX - rect.left + 12) + 'px';
+    tooltip.style.top = (ev.clientY - rect.top - 10) + 'px';
+  });
+  bar.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
+  svg.appendChild(bar);
+
+  // SEM whisker
+  const sem = b.std / Math.sqrt(b.count);
+  const wx = x + barWidth / 2;
+  svg.appendChild(el('line', {
+    x1: wx, x2: wx, y1: yScale(b.mean_accepted_len - sem), y2: yScale(b.mean_accepted_len + sem),
+    class: 'whisker'
+  }));
+
+  // x tick label (every other bucket to avoid crowding)
+  if (i % 3 === 0) {
+    const label = el('text', { x: wx, y: H - margin.bottom + 16, 'text-anchor': 'middle', class: 'tick-label' });
+    label.textContent = b.entropy.toFixed(1);
+    svg.appendChild(label);
+  }
+});
+
+// axis titles
+const xTitle = el('text', { x: margin.left + plotW / 2, y: H - 6, 'text-anchor': 'middle', class: 'axis-title' });
+xTitle.textContent = 'Target-distribution entropy (nats)';
+svg.appendChild(xTitle);
+
+const yTitle = el('text', {
+  x: -(margin.top + plotH / 2), y: 16, 'text-anchor': 'middle', class: 'axis-title',
+  transform: 'rotate(-90)'
+});
+yTitle.textContent = 'Mean accepted block length (tokens)';
+svg.appendChild(yTitle);
+
+// data table
+const table = document.getElementById('data-table');
+table.innerHTML = `<thead><tr><th>Entropy</th><th>Mean accepted len</th><th>Std dev</th><th>N</th></tr></thead>` +
+  '<tbody>' + buckets.map(b => `<tr><td>${b.entropy}</td><td>${b.mean_accepted_len}</td><td>${b.std}</td><td>${b.count}</td></tr>`).join('') + '</tbody>';
+</script>

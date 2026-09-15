@@ -1,0 +1,38 @@
+{
+  "n_turns_matched": 4449,
+  "n_records": 782221,
+  "by_category": [
+    {
+      "category": "reasoning",
+      "mean_entropy": 0.4689,
+      "median_entropy": 0.1938,
+      "std_entropy": 0.5642,
+      "count": 428502
+    },
+    {
+      "category": "tool_structure",
+      "mean_entropy": 0.4411,
+      "median_entropy": 0.1155,
+      "std_entropy": 0.5618,
+      "count": 35592
+    },
+    {
+      "category": "short_value",
+      "mean_entropy": 0.3202,
+      "median_entropy": 0.0006,
+      "std_entropy": 0.5113,
+      "count": 32065
+    },
+    {
+      "category": "code_payload",
+      "mean_entropy": 0.1861,
+      "median_entropy": 0.0,
+      "std_entropy": 0.4041,
+      "count": 286062
+    }
+  ],
+  "code_payload_vs_short_value_gap": {
+    "code_payload_mean": 0.1861,
+    "short_value_mean": 0.3202
+  }
+}
