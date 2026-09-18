@@ -1,0 +1,26 @@
+[
+  {
+    "pos":0,
+    "mean_entropy":0.084459128,
+    "acceptance_rate":0.999350135,
+    "n":260054
+  },
+  {
+    "pos":1,
+    "mean_entropy":0.2169022163,
+    "acceptance_rate":0.6641231427,
+    "n":258172
+  },
+  {
+    "pos":2,
+    "mean_entropy":0.3241363946,
+    "acceptance_rate":0.3939156841,
+    "n":258172
+  },
+  {
+    "pos":3,
+    "mean_entropy":0.4959392345,
+    "acceptance_rate":0.2049253986,
+    "n":258172
+  }
+]

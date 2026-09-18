@@ -23,6 +23,7 @@ Run from the project root: `uv run python analysis/entropy_by_token_type.py`
 
 import bisect
 import json
+import os
 import re
 from pathlib import Path
 from collections import defaultdict
@@ -32,9 +33,11 @@ import pandas as pd
 from transformers import AutoTokenizer
 
 ROOT = Path(__file__).resolve().parent.parent
-JOB_DIR = ROOT / "jobs" / "muse-glimmer-swebench-50"
-ENTROPY_LOG = ROOT / "entropy_log.jsonl"
-TOKENIZER_PATH = "/mnt/data/muse-glimmer-30b"
+JOB_DIR = Path(os.environ.get("JOB_DIR", str(ROOT / "jobs" / "muse-glimmer-swebench-50")))
+ENTROPY_LOG = Path(os.environ.get("ENTROPY_LOG", str(ROOT / "entropy_log.jsonl")))
+TOKENIZER_PATH = os.environ.get("TOKENIZER_PATH", "/mnt/data/muse-glimmer-30b")
+OUT_DIR = Path(os.environ.get("ANALYSIS_OUT_DIR", str(Path(__file__).resolve().parent)))
+OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 tok = AutoTokenizer.from_pretrained(TOKENIZER_PATH)
 
@@ -53,6 +56,23 @@ CATEGORY_COLORS = {
 }
 
 _STRING_RE = re.compile(r'"(?:\\.|[^"\\])*"')
+_THINK_RE = re.compile(r"<think>(.*?)</think>", re.DOTALL)
+
+
+def split_reasoning_and_content(msg: dict) -> tuple[str, str]:
+    """Return (reasoning_text, content_text). Some models (e.g. muse-glimmer)
+    put reasoning in a separate `reasoning_content` field; others (e.g.
+    Qwen3) inline it as <think>...</think> inside `content`."""
+    reasoning_content = msg.get("reasoning_content")
+    if reasoning_content:
+        return reasoning_content, msg.get("content") or ""
+    content = msg.get("content") or ""
+    matches = _THINK_RE.findall(content)
+    if not matches:
+        return "", content
+    reasoning_text = "".join(matches)
+    remainder = _THINK_RE.sub("", content)
+    return reasoning_text, remainder
 
 
 def n_tokens(text: str) -> int:
@@ -93,10 +113,9 @@ def classify_json_arguments(args_str: str) -> list[tuple[str, str]]:
 
 def build_segments(msg: dict) -> list[tuple[str, str]]:
     segments = []
-    reasoning_text = msg.get("reasoning_content") or ""
+    reasoning_text, content_text = split_reasoning_and_content(msg)
     if reasoning_text:
         segments.append(("reasoning", reasoning_text))
-    content_text = msg.get("content") or ""
     if content_text:
         segments.append(("prose", content_text))
     for tc in msg.get("tool_calls") or []:
@@ -237,7 +256,7 @@ def main() -> None:
             "short_value_mean": round(float(gap.get("short_value", float("nan"))), 4),
         }
 
-    out_path = Path(__file__).resolve().parent / "entropy_by_token_type.json"
+    out_path = OUT_DIR / "entropy_by_token_type.json"
     with open(out_path, "w") as f:
         json.dump(out, f, indent=2)
     print(f"\nSaved {out_path}")
@@ -268,7 +287,7 @@ def main() -> None:
     for spine in ("top", "right"):
         ax.spines[spine].set_visible(False)
     fig.tight_layout()
-    fig.savefig(Path(__file__).resolve().parent / "entropy_by_token_type.png", facecolor="white")
+    fig.savefig(OUT_DIR / "entropy_by_token_type.png", facecolor="white")
     plt.close(fig)
 
 

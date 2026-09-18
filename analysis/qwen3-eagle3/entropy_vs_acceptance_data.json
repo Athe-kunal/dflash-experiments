@@ -1,0 +1,128 @@
+{
+  "n_blocks": 260020,
+  "n_requests": 1773,
+  "pearson": -0.2049,
+  "spearman": -0.4231,
+  "buckets": [
+    {
+      "entropy": 0.033,
+      "mean_accepted_len": 2.356,
+      "count": 218963,
+      "std": 1.125
+    },
+    {
+      "entropy": 0.101,
+      "mean_accepted_len": 1.908,
+      "count": 6085,
+      "std": 1.046
+    },
+    {
+      "entropy": 0.168,
+      "mean_accepted_len": 1.854,
+      "count": 3895,
+      "std": 1.048
+    },
+    {
+      "entropy": 0.236,
+      "mean_accepted_len": 1.826,
+      "count": 3018,
+      "std": 1.032
+    },
+    {
+      "entropy": 0.302,
+      "mean_accepted_len": 1.812,
+      "count": 2783,
+      "std": 1.041
+    },
+    {
+      "entropy": 0.37,
+      "mean_accepted_len": 1.799,
+      "count": 2367,
+      "std": 1.019
+    },
+    {
+      "entropy": 0.436,
+      "mean_accepted_len": 1.737,
+      "count": 2128,
+      "std": 1.018
+    },
+    {
+      "entropy": 0.504,
+      "mean_accepted_len": 1.721,
+      "count": 2874,
+      "std": 0.996
+    },
+    {
+      "entropy": 0.572,
+      "mean_accepted_len": 1.679,
+      "count": 2387,
+      "std": 1.0
+    },
+    {
+      "entropy": 0.639,
+      "mean_accepted_len": 1.663,
+      "count": 3048,
+      "std": 0.97
+    },
+    {
+      "entropy": 0.706,
+      "mean_accepted_len": 1.591,
+      "count": 3317,
+      "std": 0.945
+    },
+    {
+      "entropy": 0.773,
+      "mean_accepted_len": 1.571,
+      "count": 1523,
+      "std": 0.925
+    },
+    {
+      "entropy": 0.841,
+      "mean_accepted_len": 1.554,
+      "count": 1312,
+      "std": 0.937
+    },
+    {
+      "entropy": 0.907,
+      "mean_accepted_len": 1.533,
+      "count": 1030,
+      "std": 0.914
+    },
+    {
+      "entropy": 0.974,
+      "mean_accepted_len": 1.534,
+      "count": 993,
+      "std": 0.914
+    },
+    {
+      "entropy": 1.042,
+      "mean_accepted_len": 1.45,
+      "count": 923,
+      "std": 0.88
+    },
+    {
+      "entropy": 1.109,
+      "mean_accepted_len": 1.386,
+      "count": 722,
+      "std": 0.793
+    },
+    {
+      "entropy": 1.176,
+      "mean_accepted_len": 1.373,
+      "count": 541,
+      "std": 0.835
+    },
+    {
+      "entropy": 1.244,
+      "mean_accepted_len": 1.388,
+      "count": 423,
+      "std": 0.798
+    },
+    {
+      "entropy": 1.31,
+      "mean_accepted_len": 1.331,
+      "count": 387,
+      "std": 0.719
+    }
+  ]
+}

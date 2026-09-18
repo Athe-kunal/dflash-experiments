@@ -12,6 +12,6 @@ wheels/
 .env
 
 jobs
-entropy_log.jsonl
+logs/*.jsonl
 
 .claude-config

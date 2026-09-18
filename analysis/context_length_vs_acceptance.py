@@ -6,6 +6,7 @@ entropy_log.jsonl via the req_id prefix match.
 """
 
 import json
+import os
 from pathlib import Path
 from collections import defaultdict
 
@@ -13,8 +14,10 @@ import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parent.parent
-JOB_DIR = ROOT / "jobs" / "muse-glimmer-swebench-50"
-ENTROPY_LOG = ROOT / "entropy_log.jsonl"
+JOB_DIR = Path(os.environ.get("JOB_DIR", str(ROOT / "jobs" / "muse-glimmer-swebench-50")))
+ENTROPY_LOG = Path(os.environ.get("ENTROPY_LOG", str(ROOT / "entropy_log.jsonl")))
+OUT_DIR = Path(os.environ.get("ANALYSIS_OUT_DIR", str(Path(__file__).resolve().parent)))
+OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def load_turn_context_lengths() -> dict:
@@ -104,7 +107,7 @@ def main():
             for _, row in agg.iterrows()
         ],
     }
-    out_path = Path(__file__).resolve().parent / "context_length_vs_acceptance.json"
+    out_path = OUT_DIR / "context_length_vs_acceptance.json"
     with open(out_path, "w") as f:
         json.dump(out, f, indent=2)
     print(f"\nSaved {out_path}")
@@ -126,7 +129,7 @@ def main():
     for spine in ("top", "right"):
         ax.spines[spine].set_visible(False)
     fig.tight_layout()
-    fig.savefig(Path(__file__).resolve().parent / "context_length_vs_acceptance.png", facecolor="white")
+    fig.savefig(OUT_DIR / "context_length_vs_acceptance.png", facecolor="white")
     plt.close(fig)
 
 

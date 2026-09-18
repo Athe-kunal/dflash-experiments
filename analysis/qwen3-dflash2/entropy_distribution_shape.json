@@ -1,0 +1,814 @@
+{
+  "n_position_records": 1901045,
+  "n_blocks_ge3": 237291,
+  "hazard_curve": [
+    {
+      "entropy": 0.062,
+      "p_accept": 0.6924,
+      "n": 996223
+    },
+    {
+      "entropy": 0.189,
+      "p_accept": 0.1622,
+      "n": 98428
+    },
+    {
+      "entropy": 0.314,
+      "p_accept": 0.1421,
+      "n": 83431
+    },
+    {
+      "entropy": 0.44,
+      "p_accept": 0.2049,
+      "n": 49147
+    },
+    {
+      "entropy": 0.565,
+      "p_accept": 0.2108,
+      "n": 50889
+    },
+    {
+      "entropy": 0.691,
+      "p_accept": 0.2351,
+      "n": 58432
+    },
+    {
+      "entropy": 0.816,
+      "p_accept": 0.1676,
+      "n": 39412
+    },
+    {
+      "entropy": 0.942,
+      "p_accept": 0.1431,
+      "n": 35260
+    },
+    {
+      "entropy": 1.067,
+      "p_accept": 0.1149,
+      "n": 36152
+    },
+    {
+      "entropy": 1.192,
+      "p_accept": 0.0948,
+      "n": 28887
+    },
+    {
+      "entropy": 1.318,
+      "p_accept": 0.0605,
+      "n": 31260
+    },
+    {
+      "entropy": 1.444,
+      "p_accept": 0.0365,
+      "n": 34878
+    },
+    {
+      "entropy": 1.569,
+      "p_accept": 0.0348,
+      "n": 25609
+    },
+    {
+      "entropy": 1.694,
+      "p_accept": 0.0294,
+      "n": 21637
+    },
+    {
+      "entropy": 1.82,
+      "p_accept": 0.0184,
+      "n": 18758
+    },
+    {
+      "entropy": 1.946,
+      "p_accept": 0.0074,
+      "n": 19654
+    },
+    {
+      "entropy": 2.071,
+      "p_accept": 0.004,
+      "n": 17923
+    },
+    {
+      "entropy": 2.196,
+      "p_accept": 0.0016,
+      "n": 15995
+    },
+    {
+      "entropy": 2.322,
+      "p_accept": 0.001,
+      "n": 13490
+    },
+    {
+      "entropy": 2.447,
+      "p_accept": 0.0,
+      "n": 11701
+    },
+    {
+      "entropy": 2.573,
+      "p_accept": 0.0005,
+      "n": 11095
+    },
+    {
+      "entropy": 2.699,
+      "p_accept": 0.0001,
+      "n": 11466
+    },
+    {
+      "entropy": 2.825,
+      "p_accept": 0.0,
+      "n": 14738
+    },
+    {
+      "entropy": 2.95,
+      "p_accept": 0.0001,
+      "n": 15576
+    },
+    {
+      "entropy": 3.075,
+      "p_accept": 0.0,
+      "n": 14315
+    },
+    {
+      "entropy": 3.201,
+      "p_accept": 0.0,
+      "n": 13585
+    },
+    {
+      "entropy": 3.326,
+      "p_accept": 0.0,
+      "n": 10892
+    },
+    {
+      "entropy": 3.452,
+      "p_accept": 0.0,
+      "n": 8784
+    },
+    {
+      "entropy": 3.578,
+      "p_accept": 0.0,
+      "n": 8775
+    },
+    {
+      "entropy": 3.703,
+      "p_accept": 0.0,
+      "n": 8557
+    },
+    {
+      "entropy": 3.829,
+      "p_accept": 0.0,
+      "n": 7974
+    },
+    {
+      "entropy": 3.954,
+      "p_accept": 0.0007,
+      "n": 6678
+    },
+    {
+      "entropy": 4.08,
+      "p_accept": 0.0003,
+      "n": 6444
+    },
+    {
+      "entropy": 4.205,
+      "p_accept": 0.0,
+      "n": 5803
+    },
+    {
+      "entropy": 4.33,
+      "p_accept": 0.0,
+      "n": 5394
+    },
+    {
+      "entropy": 4.456,
+      "p_accept": 0.0,
+      "n": 4218
+    },
+    {
+      "entropy": 4.582,
+      "p_accept": 0.0,
+      "n": 2762
+    },
+    {
+      "entropy": 4.707,
+      "p_accept": 0.0,
+      "n": 1840
+    },
+    {
+      "entropy": 4.832,
+      "p_accept": 0.0,
+      "n": 1701
+    },
+    {
+      "entropy": 4.958,
+      "p_accept": 0.0,
+      "n": 1966
+    },
+    {
+      "entropy": 5.083,
+      "p_accept": 0.0,
+      "n": 2385
+    },
+    {
+      "entropy": 5.209,
+      "p_accept": 0.0,
+      "n": 3010
+    },
+    {
+      "entropy": 5.335,
+      "p_accept": 0.0,
+      "n": 3196
+    },
+    {
+      "entropy": 5.46,
+      "p_accept": 0.0,
+      "n": 3034
+    },
+    {
+      "entropy": 5.586,
+      "p_accept": 0.0,
+      "n": 2856
+    },
+    {
+      "entropy": 5.712,
+      "p_accept": 0.0,
+      "n": 2545
+    },
+    {
+      "entropy": 5.837,
+      "p_accept": 0.0,
+      "n": 1981
+    },
+    {
+      "entropy": 5.963,
+      "p_accept": 0.0,
+      "n": 1655
+    },
+    {
+      "entropy": 6.088,
+      "p_accept": 0.0,
+      "n": 1274
+    },
+    {
+      "entropy": 6.213,
+      "p_accept": 0.0,
+      "n": 1185
+    },
+    {
+      "entropy": 6.339,
+      "p_accept": 0.0,
+      "n": 1345
+    },
+    {
+      "entropy": 6.465,
+      "p_accept": 0.0,
+      "n": 1839
+    },
+    {
+      "entropy": 6.59,
+      "p_accept": 0.0,
+      "n": 2189
+    },
+    {
+      "entropy": 6.715,
+      "p_accept": 0.0,
+      "n": 2055
+    },
+    {
+      "entropy": 6.841,
+      "p_accept": 0.0,
+      "n": 1809
+    },
+    {
+      "entropy": 6.966,
+      "p_accept": 0.0,
+      "n": 1719
+    },
+    {
+      "entropy": 7.092,
+      "p_accept": 0.0,
+      "n": 1874
+    },
+    {
+      "entropy": 7.218,
+      "p_accept": 0.0,
+      "n": 2207
+    },
+    {
+      "entropy": 7.343,
+      "p_accept": 0.0,
+      "n": 2166
+    },
+    {
+      "entropy": 7.468,
+      "p_accept": 0.0,
+      "n": 1486
+    }
+  ],
+  "survival_curve": [
+    {
+      "threshold": 0.0,
+      "p_accept_given_ge": 0.4082,
+      "n": 1901045
+    },
+    {
+      "threshold": 0.076,
+      "p_accept_given_ge": 0.1016,
+      "n": 939664
+    },
+    {
+      "threshold": 0.152,
+      "p_accept_given_ge": 0.0929,
+      "n": 885176
+    },
+    {
+      "threshold": 0.228,
+      "p_accept_given_ge": 0.0884,
+      "n": 820058
+    },
+    {
+      "threshold": 0.304,
+      "p_accept_given_ge": 0.0855,
+      "n": 764329
+    },
+    {
+      "threshold": 0.38,
+      "p_accept_given_ge": 0.0805,
+      "n": 721508
+    },
+    {
+      "threshold": 0.456,
+      "p_accept_given_ge": 0.0754,
+      "n": 692214
+    },
+    {
+      "threshold": 0.533,
+      "p_accept_given_ge": 0.0689,
+      "n": 661334
+    },
+    {
+      "threshold": 0.609,
+      "p_accept_given_ge": 0.0623,
+      "n": 630026
+    },
+    {
+      "threshold": 0.685,
+      "p_accept_given_ge": 0.0525,
+      "n": 597607
+    },
+    {
+      "threshold": 0.761,
+      "p_accept_given_ge": 0.0415,
+      "n": 561826
+    },
+    {
+      "threshold": 0.837,
+      "p_accept_given_ge": 0.0356,
+      "n": 537338
+    },
+    {
+      "threshold": 0.913,
+      "p_accept_given_ge": 0.0307,
+      "n": 515465
+    },
+    {
+      "threshold": 0.989,
+      "p_accept_given_ge": 0.0259,
+      "n": 494133
+    },
+    {
+      "threshold": 1.065,
+      "p_accept_given_ge": 0.0213,
+      "n": 471958
+    },
+    {
+      "threshold": 1.141,
+      "p_accept_given_ge": 0.0172,
+      "n": 450727
+    },
+    {
+      "threshold": 1.217,
+      "p_accept_given_ge": 0.014,
+      "n": 432822
+    },
+    {
+      "threshold": 1.293,
+      "p_accept_given_ge": 0.0112,
+      "n": 416417
+    },
+    {
+      "threshold": 1.369,
+      "p_accept_given_ge": 0.009,
+      "n": 396701
+    },
+    {
+      "threshold": 1.445,
+      "p_accept_given_ge": 0.0071,
+      "n": 374607
+    },
+    {
+      "threshold": 1.521,
+      "p_accept_given_ge": 0.0057,
+      "n": 355261
+    },
+    {
+      "threshold": 1.598,
+      "p_accept_given_ge": 0.0044,
+      "n": 339521
+    },
+    {
+      "threshold": 1.674,
+      "p_accept_given_ge": 0.0031,
+      "n": 325166
+    },
+    {
+      "threshold": 1.75,
+      "p_accept_given_ge": 0.0021,
+      "n": 312584
+    },
+    {
+      "threshold": 1.826,
+      "p_accept_given_ge": 0.0013,
+      "n": 301124
+    },
+    {
+      "threshold": 1.902,
+      "p_accept_given_ge": 0.0009,
+      "n": 289653
+    },
+    {
+      "threshold": 1.978,
+      "p_accept_given_ge": 0.0005,
+      "n": 277682
+    },
+    {
+      "threshold": 2.054,
+      "p_accept_given_ge": 0.0004,
+      "n": 265871
+    },
+    {
+      "threshold": 2.13,
+      "p_accept_given_ge": 0.0002,
+      "n": 255566
+    },
+    {
+      "threshold": 2.206,
+      "p_accept_given_ge": 0.0001,
+      "n": 245690
+    },
+    {
+      "threshold": 2.282,
+      "p_accept_given_ge": 0.0001,
+      "n": 236389
+    },
+    {
+      "threshold": 2.358,
+      "p_accept_given_ge": 0.0001,
+      "n": 228124
+    },
+    {
+      "threshold": 2.434,
+      "p_accept_given_ge": 0.0001,
+      "n": 220798
+    },
+    {
+      "threshold": 2.51,
+      "p_accept_given_ge": 0.0001,
+      "n": 213879
+    },
+    {
+      "threshold": 2.587,
+      "p_accept_given_ge": 0.0001,
+      "n": 206991
+    },
+    {
+      "threshold": 2.663,
+      "p_accept_given_ge": 0.0,
+      "n": 200579
+    },
+    {
+      "threshold": 2.739,
+      "p_accept_given_ge": 0.0,
+      "n": 193659
+    },
+    {
+      "threshold": 2.815,
+      "p_accept_given_ge": 0.0,
+      "n": 185544
+    },
+    {
+      "threshold": 2.891,
+      "p_accept_given_ge": 0.0,
+      "n": 176122
+    },
+    {
+      "threshold": 2.967,
+      "p_accept_given_ge": 0.0,
+      "n": 166484
+    },
+    {
+      "threshold": 3.043,
+      "p_accept_given_ge": 0.0,
+      "n": 157464
+    },
+    {
+      "threshold": 3.119,
+      "p_accept_given_ge": 0.0,
+      "n": 148880
+    },
+    {
+      "threshold": 3.195,
+      "p_accept_given_ge": 0.0,
+      "n": 140300
+    },
+    {
+      "threshold": 3.271,
+      "p_accept_given_ge": 0.0001,
+      "n": 132379
+    },
+    {
+      "threshold": 3.347,
+      "p_accept_given_ge": 0.0001,
+      "n": 125497
+    },
+    {
+      "threshold": 3.423,
+      "p_accept_given_ge": 0.0001,
+      "n": 119637
+    },
+    {
+      "threshold": 3.499,
+      "p_accept_given_ge": 0.0001,
+      "n": 114475
+    },
+    {
+      "threshold": 3.576,
+      "p_accept_given_ge": 0.0001,
+      "n": 109212
+    },
+    {
+      "threshold": 3.652,
+      "p_accept_given_ge": 0.0001,
+      "n": 103843
+    },
+    {
+      "threshold": 3.728,
+      "p_accept_given_ge": 0.0001,
+      "n": 98644
+    },
+    {
+      "threshold": 3.804,
+      "p_accept_given_ge": 0.0001,
+      "n": 93537
+    },
+    {
+      "threshold": 3.88,
+      "p_accept_given_ge": 0.0001,
+      "n": 88794
+    },
+    {
+      "threshold": 3.956,
+      "p_accept_given_ge": 0.0001,
+      "n": 84657
+    },
+    {
+      "threshold": 4.032,
+      "p_accept_given_ge": 0.0,
+      "n": 80662
+    },
+    {
+      "threshold": 4.108,
+      "p_accept_given_ge": 0.0,
+      "n": 76732
+    },
+    {
+      "threshold": 4.184,
+      "p_accept_given_ge": 0.0,
+      "n": 73050
+    },
+    {
+      "threshold": 4.26,
+      "p_accept_given_ge": 0.0,
+      "n": 69533
+    },
+    {
+      "threshold": 4.336,
+      "p_accept_given_ge": 0.0,
+      "n": 66130
+    },
+    {
+      "threshold": 4.412,
+      "p_accept_given_ge": 0.0,
+      "n": 63092
+    },
+    {
+      "threshold": 4.488,
+      "p_accept_given_ge": 0.0,
+      "n": 60521
+    },
+    {
+      "threshold": 4.564,
+      "p_accept_given_ge": 0.0,
+      "n": 58424
+    },
+    {
+      "threshold": 4.641,
+      "p_accept_given_ge": 0.0,
+      "n": 56893
+    },
+    {
+      "threshold": 4.717,
+      "p_accept_given_ge": 0.0,
+      "n": 55726
+    },
+    {
+      "threshold": 4.793,
+      "p_accept_given_ge": 0.0,
+      "n": 54678
+    },
+    {
+      "threshold": 4.869,
+      "p_accept_given_ge": 0.0,
+      "n": 53641
+    },
+    {
+      "threshold": 4.945,
+      "p_accept_given_ge": 0.0,
+      "n": 52586
+    },
+    {
+      "threshold": 5.021,
+      "p_accept_given_ge": 0.0,
+      "n": 51316
+    },
+    {
+      "threshold": 5.097,
+      "p_accept_given_ge": 0.0,
+      "n": 49940
+    },
+    {
+      "threshold": 5.173,
+      "p_accept_given_ge": 0.0,
+      "n": 48353
+    },
+    {
+      "threshold": 5.249,
+      "p_accept_given_ge": 0.0,
+      "n": 46502
+    },
+    {
+      "threshold": 5.325,
+      "p_accept_given_ge": 0.0,
+      "n": 44552
+    },
+    {
+      "threshold": 5.401,
+      "p_accept_given_ge": 0.0,
+      "n": 42634
+    },
+    {
+      "threshold": 5.477,
+      "p_accept_given_ge": 0.0,
+      "n": 40741
+    },
+    {
+      "threshold": 5.553,
+      "p_accept_given_ge": 0.0,
+      "n": 38983
+    },
+    {
+      "threshold": 5.63,
+      "p_accept_given_ge": 0.0,
+      "n": 37251
+    },
+    {
+      "threshold": 5.706,
+      "p_accept_given_ge": 0.0,
+      "n": 35652
+    },
+    {
+      "threshold": 5.782,
+      "p_accept_given_ge": 0.0,
+      "n": 34158
+    },
+    {
+      "threshold": 5.858,
+      "p_accept_given_ge": 0.0,
+      "n": 32946
+    },
+    {
+      "threshold": 5.934,
+      "p_accept_given_ge": 0.0,
+      "n": 31789
+    },
+    {
+      "threshold": 6.01,
+      "p_accept_given_ge": 0.0,
+      "n": 30832
+    },
+    {
+      "threshold": 6.086,
+      "p_accept_given_ge": 0.0,
+      "n": 30012
+    },
+    {
+      "threshold": 6.162,
+      "p_accept_given_ge": 0.0,
+      "n": 29276
+    },
+    {
+      "threshold": 6.238,
+      "p_accept_given_ge": 0.0,
+      "n": 28556
+    },
+    {
+      "threshold": 6.314,
+      "p_accept_given_ge": 0.0,
+      "n": 27816
+    },
+    {
+      "threshold": 6.39,
+      "p_accept_given_ge": 0.0,
+      "n": 27002
+    },
+    {
+      "threshold": 6.466,
+      "p_accept_given_ge": 0.0,
+      "n": 26061
+    },
+    {
+      "threshold": 6.542,
+      "p_accept_given_ge": 0.0,
+      "n": 24769
+    },
+    {
+      "threshold": 6.619,
+      "p_accept_given_ge": 0.0,
+      "n": 23432
+    },
+    {
+      "threshold": 6.695,
+      "p_accept_given_ge": 0.0,
+      "n": 22095
+    },
+    {
+      "threshold": 6.771,
+      "p_accept_given_ge": 0.0,
+      "n": 20861
+    },
+    {
+      "threshold": 6.847,
+      "p_accept_given_ge": 0.0,
+      "n": 19787
+    },
+    {
+      "threshold": 6.923,
+      "p_accept_given_ge": 0.0,
+      "n": 18685
+    },
+    {
+      "threshold": 6.999,
+      "p_accept_given_ge": 0.0,
+      "n": 17678
+    },
+    {
+      "threshold": 7.075,
+      "p_accept_given_ge": 0.0,
+      "n": 16559
+    },
+    {
+      "threshold": 7.151,
+      "p_accept_given_ge": 0.0,
+      "n": 15423
+    },
+    {
+      "threshold": 7.227,
+      "p_accept_given_ge": 0.0,
+      "n": 14153
+    },
+    {
+      "threshold": 7.303,
+      "p_accept_given_ge": 0.0,
+      "n": 12731
+    },
+    {
+      "threshold": 7.379,
+      "p_accept_given_ge": 0.0,
+      "n": 11422
+    },
+    {
+      "threshold": 7.455,
+      "p_accept_given_ge": 0.0,
+      "n": 10275
+    },
+    {
+      "threshold": 7.531,
+      "p_accept_given_ge": 0.0,
+      "n": 9506
+    }
+  ],
+  "block_level": {
+    "pearson_mean_entropy_vs_accepted_len": -0.544,
+    "pearson_std_entropy_vs_accepted_len": -0.617,
+    "partial_corr_std_given_mean": -0.3811,
+    "partial_corr_mean_given_std": 0.1686
+  }
+}

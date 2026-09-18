@@ -21,6 +21,8 @@ no re-run required.
 """
 
 import json
+import os
+import re
 from pathlib import Path
 from collections import defaultdict
 
@@ -28,10 +30,30 @@ import numpy as np
 import pandas as pd
 from transformers import AutoTokenizer
 
+_THINK_RE = re.compile(r"<think>(.*?)</think>", re.DOTALL)
+
+
+def split_reasoning_and_content(msg: dict) -> tuple[str, str]:
+    """Return (reasoning_text, content_text). Some models (e.g. muse-glimmer)
+    put reasoning in a separate `reasoning_content` field; others (e.g.
+    Qwen3) inline it as <think>...</think> inside `content`."""
+    reasoning_content = msg.get("reasoning_content")
+    if reasoning_content:
+        return reasoning_content, msg.get("content") or ""
+    content = msg.get("content") or ""
+    matches = _THINK_RE.findall(content)
+    if not matches:
+        return "", content
+    reasoning_text = "".join(matches)
+    remainder = _THINK_RE.sub("", content)
+    return reasoning_text, remainder
+
 ROOT = Path(__file__).resolve().parent.parent
-JOB_DIR = ROOT / "jobs" / "muse-glimmer-swebench-50"
-ENTROPY_LOG = ROOT / "entropy_log.jsonl"
-TOKENIZER_PATH = "/mnt/data/muse-glimmer-30b"
+JOB_DIR = Path(os.environ.get("JOB_DIR", str(ROOT / "jobs" / "muse-glimmer-swebench-50")))
+ENTROPY_LOG = Path(os.environ.get("ENTROPY_LOG", str(ROOT / "entropy_log.jsonl")))
+TOKENIZER_PATH = os.environ.get("TOKENIZER_PATH", "/mnt/data/muse-glimmer-30b")
+OUT_DIR = Path(os.environ.get("ANALYSIS_OUT_DIR", str(Path(__file__).resolve().parent)))
+OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 tok = AutoTokenizer.from_pretrained(TOKENIZER_PATH)
 
@@ -61,8 +83,7 @@ def load_turns() -> dict:
             total = usage.get("completion_tokens")
             if not rid or not total:
                 continue
-            reasoning_text = msg.get("reasoning_content") or ""
-            content_text = msg.get("content") or ""
+            reasoning_text, content_text = split_reasoning_and_content(msg)
             action_text = content_text
             for tc in msg.get("tool_calls") or []:
                 fn = tc.get("function") or {}
@@ -174,7 +195,7 @@ def main():
             for _, r in boundary_curve.iterrows()
         ],
     }
-    out_path = Path(__file__).resolve().parent / "reasoning_vs_action_entropy.json"
+    out_path = OUT_DIR / "reasoning_vs_action_entropy.json"
     with open(out_path, "w") as f:
         json.dump(out, f, indent=2)
     print(f"\nSaved {out_path}")
@@ -201,7 +222,7 @@ def main():
     for spine in ("top", "right"):
         ax.spines[spine].set_visible(False)
     fig.tight_layout()
-    fig.savefig(Path(__file__).resolve().parent / "reasoning_vs_action_entropy.png", facecolor="white")
+    fig.savefig(OUT_DIR / "reasoning_vs_action_entropy.png", facecolor="white")
     plt.close(fig)
 
 

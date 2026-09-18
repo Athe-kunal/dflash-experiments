@@ -1,0 +1,110 @@
+{
+  "n_turns_matched": 1722,
+  "n_records": 522654,
+  "mean_entropy_reasoning": 0.10702582265532022,
+  "mean_entropy_action": 0.03569889487417219,
+  "mean_entropy_first3_action": 0.11827244540908279,
+  "mean_entropy_mid_reasoning": 0.10750162460130001,
+  "boundary_curve": [
+    {
+      "dist": -19.0,
+      "mean_entropy": 0.0601,
+      "n": 3333
+    },
+    {
+      "dist": -17.0,
+      "mean_entropy": 0.0616,
+      "n": 2222
+    },
+    {
+      "dist": -15.0,
+      "mean_entropy": 0.0592,
+      "n": 2222
+    },
+    {
+      "dist": -13.0,
+      "mean_entropy": 0.0631,
+      "n": 2222
+    },
+    {
+      "dist": -11.0,
+      "mean_entropy": 0.0633,
+      "n": 2222
+    },
+    {
+      "dist": -9.0,
+      "mean_entropy": 0.0619,
+      "n": 2222
+    },
+    {
+      "dist": -7.0,
+      "mean_entropy": 0.0659,
+      "n": 2222
+    },
+    {
+      "dist": -5.0,
+      "mean_entropy": 0.0624,
+      "n": 2222
+    },
+    {
+      "dist": -3.0,
+      "mean_entropy": 0.0608,
+      "n": 2222
+    },
+    {
+      "dist": -1.0,
+      "mean_entropy": 0.0534,
+      "n": 2965
+    },
+    {
+      "dist": 1.0,
+      "mean_entropy": 0.1489,
+      "n": 3444
+    },
+    {
+      "dist": 3.0,
+      "mean_entropy": 0.0643,
+      "n": 3444
+    },
+    {
+      "dist": 5.0,
+      "mean_entropy": 0.0491,
+      "n": 3444
+    },
+    {
+      "dist": 7.0,
+      "mean_entropy": 0.0444,
+      "n": 3444
+    },
+    {
+      "dist": 9.0,
+      "mean_entropy": 0.0274,
+      "n": 3444
+    },
+    {
+      "dist": 11.0,
+      "mean_entropy": 0.0308,
+      "n": 3444
+    },
+    {
+      "dist": 13.0,
+      "mean_entropy": 0.0276,
+      "n": 3444
+    },
+    {
+      "dist": 15.0,
+      "mean_entropy": 0.0263,
+      "n": 3444
+    },
+    {
+      "dist": 17.0,
+      "mean_entropy": 0.0417,
+      "n": 3444
+    },
+    {
+      "dist": 19.0,
+      "mean_entropy": 0.0355,
+      "n": 3444
+    }
+  ]
+}

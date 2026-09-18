@@ -1,0 +1,49 @@
+{
+  "n_turns": 2481,
+  "pearson": 0.4151,
+  "spearman": 0.4272,
+  "buckets": [
+    {
+      "bucket": "(500.0, 1000.0]",
+      "mean_accepted_len": 2.506,
+      "std": 0.148,
+      "count": 9
+    },
+    {
+      "bucket": "(1000.0, 2000.0]",
+      "mean_accepted_len": 2.693,
+      "std": 0.289,
+      "count": 55
+    },
+    {
+      "bucket": "(2000.0, 4000.0]",
+      "mean_accepted_len": 3.217,
+      "std": 0.937,
+      "count": 122
+    },
+    {
+      "bucket": "(4000.0, 8000.0]",
+      "mean_accepted_len": 3.663,
+      "std": 1.401,
+      "count": 331
+    },
+    {
+      "bucket": "(8000.0, 16000.0]",
+      "mean_accepted_len": 4.401,
+      "std": 1.66,
+      "count": 738
+    },
+    {
+      "bucket": "(16000.0, 32000.0]",
+      "mean_accepted_len": 5.328,
+      "std": 1.667,
+      "count": 1175
+    },
+    {
+      "bucket": "(32000.0, 64000.0]",
+      "mean_accepted_len": 5.276,
+      "std": 1.883,
+      "count": 51
+    }
+  ]
+}

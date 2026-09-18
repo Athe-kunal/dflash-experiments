@@ -1,0 +1,126 @@
+{
+  "n_turns_matched": 2481,
+  "n_records": 1204697,
+  "curve": [
+    {
+      "dist": -19.0,
+      "acceptance_rate": 0.5712,
+      "mean_entropy": 0.1457,
+      "n": 6628
+    },
+    {
+      "dist": -17.0,
+      "acceptance_rate": 0.5694,
+      "mean_entropy": 0.142,
+      "n": 4433
+    },
+    {
+      "dist": -15.0,
+      "acceptance_rate": 0.5713,
+      "mean_entropy": 0.1581,
+      "n": 4418
+    },
+    {
+      "dist": -13.0,
+      "acceptance_rate": 0.5729,
+      "mean_entropy": 0.159,
+      "n": 4406
+    },
+    {
+      "dist": -11.0,
+      "acceptance_rate": 0.568,
+      "mean_entropy": 0.1522,
+      "n": 4444
+    },
+    {
+      "dist": -9.0,
+      "acceptance_rate": 0.5674,
+      "mean_entropy": 0.153,
+      "n": 4448
+    },
+    {
+      "dist": -7.0,
+      "acceptance_rate": 0.5621,
+      "mean_entropy": 0.1511,
+      "n": 4490
+    },
+    {
+      "dist": -5.0,
+      "acceptance_rate": 0.5603,
+      "mean_entropy": 0.1613,
+      "n": 4505
+    },
+    {
+      "dist": -3.0,
+      "acceptance_rate": 0.5569,
+      "mean_entropy": 0.1618,
+      "n": 4532
+    },
+    {
+      "dist": -1.0,
+      "acceptance_rate": 0.6418,
+      "mean_entropy": 0.1452,
+      "n": 6075
+    },
+    {
+      "dist": 1.0,
+      "acceptance_rate": 0.5967,
+      "mean_entropy": 0.2698,
+      "n": 8316
+    },
+    {
+      "dist": 3.0,
+      "acceptance_rate": 0.3967,
+      "mean_entropy": 0.337,
+      "n": 12507
+    },
+    {
+      "dist": 5.0,
+      "acceptance_rate": 0.3026,
+      "mean_entropy": 0.6067,
+      "n": 16398
+    },
+    {
+      "dist": 7.0,
+      "acceptance_rate": 0.3022,
+      "mean_entropy": 0.8468,
+      "n": 16422
+    },
+    {
+      "dist": 9.0,
+      "acceptance_rate": 0.379,
+      "mean_entropy": 0.7092,
+      "n": 13092
+    },
+    {
+      "dist": 11.0,
+      "acceptance_rate": 0.5072,
+      "mean_entropy": 0.4862,
+      "n": 9784
+    },
+    {
+      "dist": 13.0,
+      "acceptance_rate": 0.6029,
+      "mean_entropy": 0.257,
+      "n": 8230
+    },
+    {
+      "dist": 15.0,
+      "acceptance_rate": 0.6415,
+      "mean_entropy": 0.2202,
+      "n": 7735
+    },
+    {
+      "dist": 17.0,
+      "acceptance_rate": 0.6795,
+      "mean_entropy": 0.1679,
+      "n": 7302
+    },
+    {
+      "dist": 19.0,
+      "acceptance_rate": 0.666,
+      "mean_entropy": 0.1432,
+      "n": 7451
+    }
+  ]
+}

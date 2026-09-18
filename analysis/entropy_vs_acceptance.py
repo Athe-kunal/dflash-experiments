@@ -10,6 +10,7 @@ Run from the project root: `uv run python analysis/entropy_vs_acceptance.py`
 """
 
 import json
+import os
 from pathlib import Path
 
 import numpy as np
@@ -17,8 +18,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 ROOT = Path(__file__).resolve().parent.parent
-LOG_PATH = ROOT / "entropy_log.jsonl"
-OUT_DIR = Path(__file__).resolve().parent
+LOG_PATH = Path(os.environ.get("ENTROPY_LOG", str(ROOT / "entropy_log.jsonl")))
+OUT_DIR = Path(os.environ.get("ANALYSIS_OUT_DIR", str(Path(__file__).resolve().parent)))
+OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 BLUE = "#2a78d6"
 TEXT = "#0b0b0b"

@@ -1,0 +1,45 @@
+{
+  "n_turns_matched": 2481,
+  "n_records": 619987,
+  "by_category": [
+    {
+      "category": "reasoning",
+      "mean_entropy": 0.1023,
+      "median_entropy": 0.0,
+      "std_entropy": 0.2647,
+      "count": 408639
+    },
+    {
+      "category": "prose",
+      "mean_entropy": 0.1007,
+      "median_entropy": 0.0,
+      "std_entropy": 0.2908,
+      "count": 40545
+    },
+    {
+      "category": "tool_structure",
+      "mean_entropy": 0.0463,
+      "median_entropy": 0.0,
+      "std_entropy": 0.1933,
+      "count": 19848
+    },
+    {
+      "category": "short_value",
+      "mean_entropy": 0.0058,
+      "median_entropy": 0.0,
+      "std_entropy": 0.0586,
+      "count": 8107
+    },
+    {
+      "category": "code_payload",
+      "mean_entropy": 0.006,
+      "median_entropy": 0.0,
+      "std_entropy": 0.0618,
+      "count": 142848
+    }
+  ],
+  "code_payload_vs_short_value_gap": {
+    "code_payload_mean": 0.006,
+    "short_value_mean": 0.0058
+  }
+}
