@@ -34,7 +34,7 @@ Every drafted position, in every verification step, is logged with: the target m
 
 ## 1. Entropy vs. acceptance is a cliff, not a slope
 
-![hazard curve](entropy_hazard_curve.png)
+![hazard curve](muse-glimmer/entropy_hazard_curve.png)
 
 Binning every drafted position directly by its entropy (not by block position) and asking "what fraction got accepted" reveals a sharp discontinuity, not a smooth decline:
 
@@ -46,14 +46,14 @@ Binning every drafted position directly by its entropy (not by block position) a
 
 The big loss in acceptance odds happens the instant the model leaves *complete* certainty — not from getting *more* uncertain afterward. Eagle3's cliff (74%→35%, a 39-point drop) is sharper in relative terms than DFlash2's or the 30B model's, meaning Eagle3's confidence is more brittle.
 
-Per-model plots: [`entropy_hazard_curve.png`](entropy_hazard_curve.png) / [`qwen3-eagle3/entropy_hazard_curve.png`](qwen3-eagle3/entropy_hazard_curve.png) / [`qwen3-dflash2/entropy_hazard_curve.png`](qwen3-dflash2/entropy_hazard_curve.png)
-Cumulative view: [`entropy_survival_curve.png`](entropy_survival_curve.png) (and per-model equivalents)
+Per-model plots: [`muse-glimmer/entropy_hazard_curve.png`](muse-glimmer/entropy_hazard_curve.png) / [`qwen3-eagle3/entropy_hazard_curve.png`](qwen3-eagle3/entropy_hazard_curve.png) / [`qwen3-dflash2/entropy_hazard_curve.png`](qwen3-dflash2/entropy_hazard_curve.png)
+Cumulative view: [`muse-glimmer/entropy_survival_curve.png`](muse-glimmer/entropy_survival_curve.png) (and per-model equivalents)
 
 ---
 
 ## 2. Confidence collapses fast within a block
 
-![position decay](entropy_acceptance_by_position.png)
+![position decay](muse-glimmer/entropy_acceptance_by_position.png)
 
 Acceptance at position *N* requires positions 0..N all to have been correct in a row, so it necessarily shrinks with depth — like a streak of coin flips. What differs by drafter is *how fast*:
 
@@ -67,13 +67,13 @@ Acceptance at position *N* requires positions 0..N all to have been correct in a
 
 DFlash2 decays more gracefully at every matched depth despite drafting more than twice as many tokens per block (7 vs 3 speculative tokens). Mean accepted length: **DFlash2 = 3.23 tokens, Eagle3 = 2.25 tokens.**
 
-Plots: [`entropy_acceptance_by_position.png`](entropy_acceptance_by_position.png) and per-model equivalents in `qwen3-eagle3/` and `qwen3-dflash2/`.
+Plots: [`muse-glimmer/entropy_acceptance_by_position.png`](muse-glimmer/entropy_acceptance_by_position.png) and per-model equivalents in `qwen3-eagle3/` and `qwen3-dflash2/`.
 
 ---
 
 ## 3. Reasoning is uncertain; code and tool-calls are confident
 
-![reasoning vs action](reasoning_vs_action_entropy.png)
+![reasoning vs action](muse-glimmer/reasoning_vs_action_entropy.png)
 
 Splitting each assistant turn into "reasoning" (chain-of-thought, including inline `<think>...</think>` for Qwen3) vs. "action" (tool calls, code, replies):
 
@@ -87,13 +87,13 @@ The direction holds across every model tested. Absolute entropy is 5-10x lower o
 
 **The reasoning→action transition zone** (how long confidence takes to kick in after the model starts acting) differs by drafter: Eagle3's first 3 action tokens are barely more uncertain than mid-reasoning (+9%), while DFlash2 shows a much sharper spike right at the transition (+67%).
 
-Plots: [`reasoning_vs_action_entropy.png`](reasoning_vs_action_entropy.png) and per-model equivalents.
+Plots: [`muse-glimmer/reasoning_vs_action_entropy.png`](muse-glimmer/reasoning_vs_action_entropy.png) and per-model equivalents.
 
 ---
 
 ## 4. Token-type breakdown: low-entropy scaffolding
 
-![token type](entropy_by_token_type.png)
+![token type](muse-glimmer/entropy_by_token_type.png)
 
 Breaking the action channel down further into tool-call structure (JSON keys/punctuation, function names), short argument values (flags, paths), and long code/command payloads (heredocs, patches):
 
@@ -105,19 +105,19 @@ Breaking the action channel down further into tool-call structure (JSON keys/pun
 
 On the 30B model, short standalone values carry meaningfully *more* entropy than long code payloads (0.320 vs 0.186) — evidence that reproducing a long, already-decided code block is more "copying" than "deciding." **That gap essentially vanishes on both Qwen3-8B configs** (short_value ≈ code_payload, both near zero) — likely because the 8B model is near-deterministic almost everywhere on this benchmark, leaving little room for the effect to show up.
 
-Plots: [`entropy_by_token_type.png`](entropy_by_token_type.png) and per-model equivalents.
+Plots: [`muse-glimmer/entropy_by_token_type.png`](muse-glimmer/entropy_by_token_type.png) and per-model equivalents.
 
 ---
 
 ## 5. The reasoning→action boundary has a real, but small and localized, acceptance dip
 
-![boundary controlled](acceptance_by_boundary_controlled.png)
+![boundary controlled](muse-glimmer/acceptance_by_boundary_controlled.png)
 
 Using the muse-glimmer-30B data (where this was tested in most depth): naively, acceptance rate dips for ~10 tokens right after the reasoning→action switch (27% → 21%, back to 21.5%). But most of that dip is a **confound** — the mix of within-block depths being sampled shifts across that window, and deeper positions accept less regardless of *why* they're deep.
 
 After controlling for within-block depth directly (comparing pos=1-to-pos=1, pos=2-to-pos=2, etc. before/after the boundary): a smaller, genuine effect survives — a 5-9 percentage point dip at early-to-mid block depths (positions 1-3), lasting ~6-10 tokens, fully recovering by ~15-18 tokens after the switch. Position 0 (the very first guess of any block) is completely unaffected.
 
-Plots: [`acceptance_by_boundary_distance.png`](acceptance_by_boundary_distance.png), [`acceptance_by_boundary_controlled.png`](acceptance_by_boundary_controlled.png), and per-model equivalents.
+Plots: [`muse-glimmer/acceptance_by_boundary_distance.png`](muse-glimmer/acceptance_by_boundary_distance.png), [`muse-glimmer/acceptance_by_boundary_controlled.png`](muse-glimmer/acceptance_by_boundary_controlled.png), and per-model equivalents.
 
 ---
 
@@ -132,7 +132,7 @@ Partial correlations at the block level — does the *spread* (std) of entropy w
 
 For **Eagle3**, once you know a block's average entropy, its spread adds almost nothing — acceptance length is governed almost entirely by the mean. For **DFlash2**, the opposite: spread dominates, and controlling for it, the mean barely matters. This tracks with how each drafter generates: Eagle3 produces tokens sequentially, each conditioned on the last, so it behaves like one evolving confidence level; DFlash2 drafts the whole block in parallel, so an uneven mix of easy/hard positions hurts it more than the average difficulty does.
 
-Plots: [`entropy_variance_vs_acceptance.png`](entropy_variance_vs_acceptance.png) and per-model equivalents.
+Plots: [`muse-glimmer/entropy_variance_vs_acceptance.png`](muse-glimmer/entropy_variance_vs_acceptance.png) and per-model equivalents.
 
 ---
 
@@ -145,7 +145,7 @@ Plots: [`entropy_variance_vs_acceptance.png`](entropy_variance_vs_acceptance.png
 
 Qwen3-8B's native context window (40,960 tokens) is far smaller than the 30B model's. Roughly 35-45% of both Qwen3-8B runs' SWE-bench episodes errored out from exceeding it mid-task. Turns that *do* reach long context in these runs are a survivorship-biased sample (only terser/better-behaved trajectories got there without erroring), which likely explains why the two 8B configs disagree with each other on the sign of this correlation. Not treated as a real finding — flagged as noise pending a cleaner test.
 
-Plots: [`context_length_vs_acceptance.png`](context_length_vs_acceptance.png) and per-model equivalents.
+Plots: [`muse-glimmer/context_length_vs_acceptance.png`](muse-glimmer/context_length_vs_acceptance.png) and per-model equivalents.
 
 ---
 
