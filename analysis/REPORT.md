@@ -32,6 +32,30 @@ Every drafted position, in every verification step, is logged with: the target m
 
 ---
 
+## Verdict: Eagle3 vs. DFlash2 — is one actually better?
+
+On the same target model and workload, **DFlash2 (diffusion) wins decisively on every acceptance-quality metric measured** — it's not really conditional within what we tested here:
+
+| | Eagle3 (AR) | DFlash2 (diffusion) |
+|---|---|---|
+| Acceptance at pos 0 | 99.9% | 99.8% *(tied)* |
+| Acceptance at pos 1 | 70.8% | **76.0%** |
+| Acceptance at pos 2 | 41.5% | **59.0%** |
+| Acceptance at pos 3 | 20.9% | **48.5%** |
+| Mean accepted length | 2.25 tokens | **3.23 tokens** |
+
+The gap *widens* with depth, and DFlash2 achieves this while drafting more than twice as many tokens per block (7 vs 3) — normally a harder task, not an easier one. Position 0 is a dead heat; DFlash2's advantage only shows up once there's real uncertainty to navigate, and it holds up better at every depth beyond that.
+
+**What this study did *not* measure, and why that matters for a real "which is better" call:**
+
+1. **Wall-clock throughput / draft-side compute cost.** Eagle3's draft head is a single transformer layer; DFlash2's is 5 layers plus block-diffusion machinery (mask tokens, conv groups, a selector). A higher acceptance rate only translates to real speedup if the extra draft-side compute doesn't eat the gains — we logged acceptance and entropy, not latency, so this is genuinely unknown from this data alone.
+2. **Simplicity of the online signal.** Eagle3's block outcome is governed almost entirely by mean entropy (§6: partial corr with spread ≈ -0.004) — trivial to build an adaptive early-stopping heuristic around. DFlash2's outcome depends on spread as much as mean, which is a more complex signal to act on in production.
+3. **Scope.** One workload (agentic SWE-bench coding), one target scale (8B). The muse-glimmer-30B run is DFlash2-only at a different target model, so it can't confirm whether DFlash2's edge holds at larger scale — it's included as a scale reference point, not part of this comparison.
+
+If the goal is a production decision rather than an acceptance-quality comparison, the natural next step is measuring real per-step latency for both drafters and computing effective tokens/sec, not just acceptance rate.
+
+---
+
 ## 1. Entropy vs. acceptance is a cliff, not a slope
 
 ![hazard curve](muse-glimmer/entropy_hazard_curve.png)
@@ -41,10 +65,10 @@ Binning every drafted position directly by its entropy (not by block position) a
 | | near-zero entropy | just above zero | further decline |
 |---|---|---|---|
 | muse-glimmer-30B | 53% accept | → 23% accept | gradual, down to <1% by entropy ≈2.5 |
-| Eagle3 (Qwen3-8B) | 74% accept | → 35% accept | gradual, down to ~0% by entropy ≈2.0 |
-| DFlash2 (Qwen3-8B) | see `qwen3-dflash2/entropy_hazard_curve.png` | | |
+| Eagle3 (Qwen3-8B) | 74% accept | → 35% accept | smooth, monotonic decline to ~0% by entropy ≈2.0 |
+| DFlash2 (Qwen3-8B) | 69% accept | → 16% accept | **non-monotonic**: dips to 14%, partially recovers to ~20-23% over the next few bins, then resumes a smooth decline to ~0% by entropy ≈2.0 (long tail out to entropy ≈7.5) |
 
-The big loss in acceptance odds happens the instant the model leaves *complete* certainty — not from getting *more* uncertain afterward. Eagle3's cliff (74%→35%, a 39-point drop) is sharper in relative terms than DFlash2's or the 30B model's, meaning Eagle3's confidence is more brittle.
+The big loss in acceptance odds happens the instant the model leaves *complete* certainty — not from getting *more* uncertain afterward. In relative terms DFlash2's initial cliff is actually the **steeper** one of the two (69%→16%, falling to 23% of its peak, vs. Eagle3's 74%→35%, falling to 47% of its peak) — the opposite of what an earlier draft of this report claimed. But this aggregate, position-blind view is noisier than it looks: it mixes together positions of different depths within a block, which have very different baseline acceptance rates on their own (see §2). The depth-controlled comparison in §2 and §6 is the one to trust for "which drafter handles uncertainty better," and there DFlash2 wins clearly and consistently.
 
 Per-model plots: [`muse-glimmer/entropy_hazard_curve.png`](muse-glimmer/entropy_hazard_curve.png) / [`qwen3-eagle3/entropy_hazard_curve.png`](qwen3-eagle3/entropy_hazard_curve.png) / [`qwen3-dflash2/entropy_hazard_curve.png`](qwen3-dflash2/entropy_hazard_curve.png)
 Cumulative view: [`muse-glimmer/entropy_survival_curve.png`](muse-glimmer/entropy_survival_curve.png) (and per-model equivalents)
