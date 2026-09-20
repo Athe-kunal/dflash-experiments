@@ -9,7 +9,8 @@
 - **Acceptance vs. entropy is a cliff, not a slope.** The moment the target model has *any* real uncertainty, acceptance rate roughly halves immediately (e.g. 56% → ~23%). Beyond that initial cliff, more uncertainty makes things worse only gradually.
 - **Confidence collapses fast within a draft block.** Position 0 of a block is accepted ~99.9% of the time; by position 3 it's already down to 20-48% depending on the drafter.
 - **Reasoning tokens carry 3-4x more entropy than action tokens** (tool calls / code) — consistently, across every model tested.
-- **DFlash2 (diffusion drafter) beats Eagle3 (AR drafter) at every matched depth**, on the same target model (Qwen3-8B): higher per-position acceptance, higher mean accepted length (3.23 vs 2.25 tokens), and a shallower entropy-uncertainty cliff.
+- **DFlash2 (diffusion drafter) beats Eagle3 (AR drafter) at every matched depth**, on the same target model (Qwen3-8B): higher per-position acceptance, higher mean accepted length (3.23 vs 2.25 tokens).
+- **But held at the same entropy level, Eagle3 is the better guesser — and the gap widens with uncertainty.** At entropy ≈1.9-2.2, Eagle3 accepts roughly 5x as often as DFlash2 does at that same uncertainty level. DFlash2's overall win comes from *avoiding* high-entropy situations more often, not from handling them better once they arrive.
 - **Within a block, what predicts acceptance length differs by architecture.** For Eagle3, it's almost entirely the *average* entropy. For DFlash2, the *spread* of entropy across the block matters more than the average.
 - **Caveat:** Qwen3-8B's native 40,960-token context window caused 35-45% of SWE-bench episodes to error out mid-task (both speculators) — smaller than the original 30B model's effective context by a large margin, and it biases some of the longer-context comparisons.
 
@@ -46,10 +47,12 @@ On the same target model and workload, **DFlash2 (diffusion) wins decisively on 
 
 The gap *widens* with depth, and DFlash2 achieves this while drafting more than twice as many tokens per block (7 vs 3) — normally a harder task, not an easier one. Position 0 is a dead heat; DFlash2's advantage only shows up once there's real uncertainty to navigate, and it holds up better at every depth beyond that.
 
+**But there's a sharper nuance underneath this, and it flips the framing.** §2 below shows that when you hold *entropy itself* fixed instead of position — i.e. ask "given this exact level of target-model uncertainty, who guesses right more often" — **Eagle3 wins, by an increasingly large margin as entropy rises.** DFlash2's overall advantage above isn't because it handles uncertainty better; it's because it *encounters* less of it. At a given depth within a block, DFlash2 tends to be sitting at lower entropy than Eagle3 is at that same depth — its block-parallel drafting keeps confidence higher for longer, structurally. But once genuine uncertainty does show up, DFlash2 is the worse guesser of the two, and the gap between them grows the more uncertain the target model gets.
+
 **What this study did *not* measure, and why that matters for a real "which is better" call:**
 
 1. **Wall-clock throughput / draft-side compute cost.** Eagle3's draft head is a single transformer layer; DFlash2's is 5 layers plus block-diffusion machinery (mask tokens, conv groups, a selector). A higher acceptance rate only translates to real speedup if the extra draft-side compute doesn't eat the gains — we logged acceptance and entropy, not latency, so this is genuinely unknown from this data alone.
-2. **Simplicity of the online signal.** Eagle3's block outcome is governed almost entirely by mean entropy (§6: partial corr with spread ≈ -0.004) — trivial to build an adaptive early-stopping heuristic around. DFlash2's outcome depends on spread as much as mean, which is a more complex signal to act on in production.
+2. **Simplicity of the online signal.** Eagle3's block outcome is governed almost entirely by mean entropy (§7: partial corr with spread ≈ -0.004) — trivial to build an adaptive early-stopping heuristic around. DFlash2's outcome depends on spread as much as mean, which is a more complex signal to act on in production.
 3. **Scope.** One workload (agentic SWE-bench coding), one target scale (8B). The muse-glimmer-30B run is DFlash2-only at a different target model, so it can't confirm whether DFlash2's edge holds at larger scale — it's included as a scale reference point, not part of this comparison.
 
 If the goal is a production decision rather than an acceptance-quality comparison, the natural next step is measuring real per-step latency for both drafters and computing effective tokens/sec, not just acceptance rate.
@@ -68,14 +71,34 @@ Binning every drafted position directly by its entropy (not by block position) a
 | Eagle3 (Qwen3-8B) | 74% accept | → 35% accept | smooth, monotonic decline to ~0% by entropy ≈2.0 |
 | DFlash2 (Qwen3-8B) | 69% accept | → 16% accept | **non-monotonic**: dips to 14%, partially recovers to ~20-23% over the next few bins, then resumes a smooth decline to ~0% by entropy ≈2.0 (long tail out to entropy ≈7.5) |
 
-The big loss in acceptance odds happens the instant the model leaves *complete* certainty — not from getting *more* uncertain afterward. In relative terms DFlash2's initial cliff is actually the **steeper** one of the two (69%→16%, falling to 23% of its peak, vs. Eagle3's 74%→35%, falling to 47% of its peak) — the opposite of what an earlier draft of this report claimed. But this aggregate, position-blind view is noisier than it looks: it mixes together positions of different depths within a block, which have very different baseline acceptance rates on their own (see §2). The depth-controlled comparison in §2 and §6 is the one to trust for "which drafter handles uncertainty better," and there DFlash2 wins clearly and consistently.
+The big loss in acceptance odds happens the instant the model leaves *complete* certainty — not from getting *more* uncertain afterward. In relative terms DFlash2's initial cliff is actually the **steeper** one of the two (69%→16%, falling to 23% of its peak, vs. Eagle3's 74%→35%, falling to 47% of its peak) — the opposite of what an earlier draft of this report claimed. But this aggregate, position-blind view is noisier than it looks: it mixes together positions of different depths within a block, which have very different baseline acceptance rates on their own (see §3). The depth-controlled comparison in §3 and §7 is the one to trust for "which drafter has the higher overall acceptance rate" — but §2, next, asks a different and sharper question: at *matched* entropy, not matched position, who actually guesses better?
 
 Per-model plots: [`muse-glimmer/entropy_hazard_curve.png`](muse-glimmer/entropy_hazard_curve.png) / [`qwen3-eagle3/entropy_hazard_curve.png`](qwen3-eagle3/entropy_hazard_curve.png) / [`qwen3-dflash2/entropy_hazard_curve.png`](qwen3-dflash2/entropy_hazard_curve.png)
 Cumulative view: [`muse-glimmer/entropy_survival_curve.png`](muse-glimmer/entropy_survival_curve.png) (and per-model equivalents)
 
 ---
 
-## 2. Confidence collapses fast within a block
+## 2. Entropy-matched comparison: Eagle3 out-guesses DFlash2 under real uncertainty
+
+Section 1's hazard curves are position-blind — they pool positions of every depth together, and depth alone drives a lot of the acceptance-rate difference (§3). To isolate the drafters' actual guessing quality, hold entropy fixed instead: at a *given* level of target-model uncertainty, which drafter's token matches the target's more often?
+
+| entropy | Eagle3 accept | DFlash2 accept | Eagle3's edge |
+|---|---|---|---|
+| ~0.72 | 29.2% | 23.5% | +5.7pp |
+| ~0.95 | 21.1% | 14.3% | +6.8pp |
+| ~1.18 | 16.2% | 9.5% | +6.7pp |
+| ~1.40 | 12.0% | 3.6% | +8.4pp (3.3x) |
+| ~1.63 | 7.7% | 2.9% | 2.7x |
+| ~1.92 | 3.4% | 0.7% | 4.9x |
+| ~2.15 | 1.0% | 0.2% | 5x |
+
+Eagle3 wins at essentially every entropy level above the near-zero floor, and its relative edge *grows* as entropy climbs — by entropy ≈1.9-2.2 it's accepting roughly 5x as often as DFlash2 at the same uncertainty level.
+
+**This reconciles with §1's aggregate result rather than contradicting it.** DFlash2's overall lead (§3, §7) comes from *encountering* high entropy less often in the first place — at a given depth within a block, DFlash2 tends to be sitting at lower entropy than Eagle3 is at that same depth, likely a structural effect of drafting the whole block in one parallel, non-causal pass. But conditional on genuine uncertainty actually showing up, DFlash2 is the *worse* guesser of the two, and increasingly so. So: DFlash2 wins on staying confident longer; Eagle3 wins on handling it once confidence runs out.
+
+---
+
+## 3. Confidence collapses fast within a block
 
 ![position decay](muse-glimmer/entropy_acceptance_by_position.png)
 
@@ -95,7 +118,7 @@ Plots: [`muse-glimmer/entropy_acceptance_by_position.png`](muse-glimmer/entropy_
 
 ---
 
-## 3. Reasoning is uncertain; code and tool-calls are confident
+## 4. Reasoning is uncertain; code and tool-calls are confident
 
 ![reasoning vs action](muse-glimmer/reasoning_vs_action_entropy.png)
 
@@ -115,7 +138,7 @@ Plots: [`muse-glimmer/reasoning_vs_action_entropy.png`](muse-glimmer/reasoning_v
 
 ---
 
-## 4. Token-type breakdown: low-entropy scaffolding
+## 5. Token-type breakdown: low-entropy scaffolding
 
 ![token type](muse-glimmer/entropy_by_token_type.png)
 
@@ -133,7 +156,7 @@ Plots: [`muse-glimmer/entropy_by_token_type.png`](muse-glimmer/entropy_by_token_
 
 ---
 
-## 5. The reasoning→action boundary has a real, but small and localized, acceptance dip
+## 6. The reasoning→action boundary has a real, but small and localized, acceptance dip
 
 ![boundary controlled](muse-glimmer/acceptance_by_boundary_controlled.png)
 
@@ -145,7 +168,7 @@ Plots: [`muse-glimmer/acceptance_by_boundary_distance.png`](muse-glimmer/accepta
 
 ---
 
-## 6. AR vs. diffusion: what predicts a block's acceptance length differs structurally
+## 7. AR vs. diffusion: what predicts a block's acceptance length differs structurally
 
 Partial correlations at the block level — does the *spread* (std) of entropy within a block predict acceptance length, beyond what the *mean* already predicts?
 
